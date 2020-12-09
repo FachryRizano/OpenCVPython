@@ -15,19 +15,19 @@ import numpy as np
 #         break
 
 # #import webcam
-# cap = cv2.VideoCapture(0)
-# # ini width
-# cap.set(3,640)
-# # ini setting height
-# cap.set(4,480)
-# #ini setting brightness
-# cap.set(10,100)
-#
-# while True:
-#     success, img = cap.read()
-#     cv2.imshow("Video",img)
-#     if cv2.waitKey(2) & 0xFF == ord('q'):
-#         break
+cap = cv2.VideoCapture(0)
+# ini width
+cap.set(3,640)
+# ini setting height
+cap.set(4,480)
+#ini setting brightness
+cap.set(10,100)
+
+while True:
+    success, img = cap.read()
+    cv2.imshow("Video",img)
+    if cv2.waitKey(2) & 0xFF == ord('q'):
+        break
 
 # ini buat ngerubah gambar jadi gray
 # img = cv2.imread("Resource/lena.jfif")
