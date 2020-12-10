@@ -8,13 +8,13 @@ cap.set(3,width)
 cap.set(4,height)
 cap.set(10,150)
 
-myColors = [[54,63,79,179,255,253],#hijau
-            [116,22,129,167,93,215],#pink
-            [4,62,83,13,190,231]] #oren
-myColorValue = [
-                [85,255,0],
-                [242,0,255],
-                [0,174,255]
+myColors = [[67,73,104,101,255,255],#pala botol
+            [30,52,71,80,170,196]]#pulpen ijo
+            # [4,62,83,13,190,231]] #oren
+myColorValues = [
+                [255,233,0],
+                [0,255,55]
+                # [0,174,255]
                 ]
 myPoints = [] #[x,y,colorId]
 def getContours(img):
@@ -35,22 +35,33 @@ def getContours(img):
 def findColor(img,myColors,myColorValues):
     imgHSV = cv2.cvtColor(img,cv2.COLOR_BGR2HSV)
     count = 0
+    newPoints =[]
     for color in myColors:
         lower = np.array(color[0:3])
         upper = np.array(color[3:6])
         mask = cv2.inRange(imgHSV, lower, upper)
         x,y=getContours(mask)
         cv2.circle(imgResult,(x,y),10,myColorValues[count],cv2.FILLED)
+        if x!= 0 and y!=0:
+            newPoints.append([x,y,count])
         count +=1
         # cv2.imshow(str(color[0]),mask)
+    return newPoints
+
+
 def drawOnCanvas(myPoints,myColorValues):
     for point in myPoints:
-        cv2.circle(imgResult,(point[0],point[1], 10, myColorValues[point[2]], cv2.FILLED))
+        cv2.circle(imgResult,(point[0],point[1]), 10, myColorValues[point[2]], cv2.FILLED)
+
 while True:
     success, img = cap.read()
     imgResult = img.copy()
     newPoints = findColor(img,myColors, myColorValues)
-    findColor(img, myColors,myColorValue)
+    if len(newPoints)!= 0:
+        for newP in newPoints:
+            myPoints.append(newP)
+    if len(myPoints)!=0:
+        drawOnCanvas(myPoints,myColorValues)
     cv2.imshow("Result",imgResult)
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
